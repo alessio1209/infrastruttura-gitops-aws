@@ -1,0 +1,24 @@
+---
+- name: configurazione Server Database On-Premise (VM2) 
+  #diciamo ad ansible di eseguire questo file solo sui server di questo gruppo
+  hosts: on-premise
+  become: yes
+
+  tasks:
+    - name: 1. Aggiornamento della cache dei pacchetti
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: 2. installazione di Docker e dipendenze
+      apt:
+        name:
+          - docker.io
+          - python3-docker #permette ad ansible di comandare docker
+        state: present
+
+    - name: 3. Assicurare che il servizio Docker sia attivo e parta al riavvio
+      service:
+        name: docker
+        state: started
+        enabled: yes
