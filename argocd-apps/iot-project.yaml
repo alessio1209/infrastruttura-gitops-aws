@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject #definiamo che stiamo creando un set di regole di sicurezza e limiti (role-based access control -RBAC) per un gruppo di app
+metadata:
+  name: iot-project
+  namespace: argocd
+
+spec:
+  description: "Progetto isolato e sicuro per l'ecosistema IoT"
+  sourceRepos: #potrà scaricare codice solo da questo link
+  - 'https://github.com/alessio1209/app-python-ibrida.git'
+  destinations: #può installare solo nel cliuster locale e nel namespace corretto. Argocd non potrà provare a deployare questa app su altri cluster esterni
+  - server: 'https://kubernetes.default.svc'
+    namespace: 'iot-production' #impedisce ad argocd di installare pod dell'app in altri quartieri (come kube-system)
+  clusterResourceWhitelist: #autorizzazione a creare la cartella del namespace
+  - group: ''
+    kind: Namespace

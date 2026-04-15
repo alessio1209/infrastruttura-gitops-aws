@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application #non è una risorsa standard di kubernetes (come i pod o i service). è una CRD (custom resource definition), un'espansione creata appositamente da argocd per rappresentare un'intera applicazione monitorata
+metadata:
+  name: iot-dashboard
+  namespace: argocd
+
+spec:
+  project: iot-project #argocd usa questo per raggruppare le applicaione e applicare regole di sicurezza.
+  source:
+    repoURL: 'https://github.com/alessio1209/app-python-ibrida.git' #indirizzo del repository con l'app python
+    targetRevision: main #diciamo ad argocd di ignorare tutti gli altri rami
+    path: k8s/base #cartella dove si trova kustomization.yaml 
+  destination:
+    server: 'https://kubernetes.default.svc' #è l'indirizzo interno che indica il cluster locale, dove argocd distribuirà l'app 
+    namespace: iot-production
+  syncPolicy: 
+    automated: #diciamo ad argocd di non aspettare un click sull'interfaccia web per fare rilasci
+      prune: true #se cancelliamo un file YAML da GitHub, argocd cancellerà fisicamente quel pezzo dal cluster
+      selfHeal: true #auto-guarigione, se un Pod viene cancellato, argocd rileva la discrepanza con GitHub e lo ricrea
+    synncOptions:
+      - CreateNamespace=true #questo comando dice ad argocd di creare il namespace se non esiste ancora
