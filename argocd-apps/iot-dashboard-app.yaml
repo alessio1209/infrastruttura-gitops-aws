@@ -17,5 +17,5 @@ spec:
     automated: #diciamo ad argocd di non aspettare un click sull'interfaccia web per fare rilasci
       prune: true #se cancelliamo un file YAML da GitHub, argocd cancellerà fisicamente quel pezzo dal cluster
       selfHeal: true #auto-guarigione, se un Pod viene cancellato, argocd rileva la discrepanza con GitHub e lo ricrea
-    synncOptions:
+    syncOptions:
       - CreateNamespace=true #questo comando dice ad argocd di creare il namespace se non esiste ancora
