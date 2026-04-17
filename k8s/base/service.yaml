@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service #definisce che questa risorsa serve a gestire la connettività
+metadata:
+  name: iot-dashboard-service
+
+spec:
+  selector:
+    app: iot-dashboard
+  ports:
+    - protocol: TCP
+      port: 80 #porta pubblica all'interno del cluster. Gli utenti o ArgoCD chiameranno l'app sulla porta 80
+      targetPort: 8000 #porta reale del container Python. Il service prende il traffico dalla porta 80 e lo manda sulla porta 8000.
+  type: ClusterIP #significa che il servizio è visibile solo all'interno del cluster kubernetes (per sicurezza). Per vederlo da fuori, useremo l'ingress

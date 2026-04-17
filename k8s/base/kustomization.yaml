@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1 #indica che non è un normale file kubernetes, ma un file specifico per il motore kustomize 
+kind: Kustomization #tipo di risorsa. Kustomize funge da indice e dice a ArgoCD esattamente quali file prendere e come combinarli
+
+resources: #dichiara l'inizio di una lista di file 
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml

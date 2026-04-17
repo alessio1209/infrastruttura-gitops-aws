@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress #risorsa che gestisce l'accesso esterno (HTTP/HTTPS)
+metadata:
+  name: iot-dashboard-ingress
+  annotations: #comando per configurare il server nginx. Serve a dare istruioni specifiche a un componente esterno al manifesto.
+    #istruzione per il controller Nginx che abbiamo sulla VM2
+    kubernetes.io/ingress.class: nginx #stiamo dicendo che sarà un server nginx a smistare il traffico dall'esterno (utenti) e mandarlo all'intero del cluster di Kubernetes al Service sulla porta 80 e poi sarà il service, tramite etichette, a smistare ai vari pods nel cluster sulla porta 8000
+
+spec:
+  rules:
+  - host: iot.alessio.lab #il nome di dominio che assegneremo all'app
+    http: #stiamo dichiarando che ci aspettiamo traffico web standard. Se dovesse arrivare traffico di database o di email, Nginx lo scarterebbe
+      paths: 
+      - path: / #indica la rotta (URL) che stiamo configurando. il simbolo / rappresenta la radice assoluta (la home page) del sito.
+        pathType: Prefix #parametro fondamentale per le applicazioni moderne. Dice a Nginx che qualsiasi utente cerchi di accedere a un indirizzo che inizia con /, mandalo al servizio dell'app. In pratica, se un utente visita iot.alessio.lab/ oppure iot.alessio.lab/api/telai la richiesta verrà sempre recapitata correttamente al cntainer FastAPI 
+        backend:  #dice all'ingress dove mandare gli utenti che arrivano dall'esterno
+          service: 
+            name: iot-dashboard-service
+            port:
+              number: 80
