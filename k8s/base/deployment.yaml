@@ -19,6 +19,6 @@ spec:
         kubernetes.io/hostname: debian2
       containers:
       - name: iot-dashboard
-        image: alessioerco12/iot-dashboard:7cbc2c4
+        image: alessioerco12/iot-dashboard:2e2bb91
         ports:
         - containerPort: 8000
