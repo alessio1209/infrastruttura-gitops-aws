@@ -4,7 +4,7 @@ metadata:
   name: iot-dashboard-ingress
   annotations: #comando per configurare il server nginx. Serve a dare istruioni specifiche a un componente esterno al manifesto.
     #istruzione per il controller Nginx che abbiamo sulla VM2
-    kubernetes.io/ingress.class: nginx #stiamo dicendo che sarà un server nginx a smistare il traffico dall'esterno (utenti) e mandarlo all'intero del cluster di Kubernetes al Service sulla porta 80 e poi sarà il service, tramite etichette, a smistare ai vari pods nel cluster sulla porta 8000
+    kubernetes.io/ingress.class: traefik #stiamo dicendo che sarà traefik a smistare il traffico dall'esterno (utenti) e mandarlo all'intero del cluster di Kubernetes al Service sulla porta 80 e poi sarà il service, tramite etichette, a smistare ai vari pods nel cluster sulla porta 8000
 
 spec:
   rules:
